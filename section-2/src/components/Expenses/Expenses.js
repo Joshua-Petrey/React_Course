@@ -4,7 +4,7 @@ import Card from "../UI/Card";
 import ExpenseFilter from "./ExpenseFilter";
 import { useState } from "react";
 
-const Expenses = (expenses) => {
+const Expenses = (props) => {
   // store the filterYear state
   //2021 wil be the default filter selected since we two-way bind by sending the current selectedYear
   const [filterYear, setFilterYear] = useState("2021");
@@ -20,27 +20,14 @@ const Expenses = (expenses) => {
         <ExpenseFilter
           onFilterYearChange={yearUpdateHandler}
           selectedYear={filterYear}
-        ></ExpenseFilter>
-        <ExpenseItem
-          title={expenses.items[0].title}
-          amount={expenses.items[0].amount}
-          date={expenses.items[0].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={expenses.items[1].title}
-          amount={expenses.items[1].amount}
-          date={expenses.items[1].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={expenses.items[2].title}
-          amount={expenses.items[2].amount}
-          date={expenses.items[2].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={expenses.items[3].title}
-          amount={expenses.items[3].amount}
-          date={expenses.items[3].date}
-        ></ExpenseItem>
+        />
+        {props.items.map((expense) => (
+          <ExpenseItem
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        ))}
       </Card>
     </div>
   );

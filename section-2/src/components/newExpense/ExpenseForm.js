@@ -44,15 +44,13 @@ const ExpenseForm = (props) => {
   const submitHandler = (event) => {
     // stops page reload
     event.preventDefault();
-
     // get state values to be sent to server/parent component
     const expenseData = {
       title: enteredTitle,
-      amount: setEnteredAmount,
-      date: new Date(setEnteredDate),
+      amount: enteredAmount,
+      date: new Date(enteredDate),
     };
-
-    // call the function prop pass from the parent
+    // call the function prop passed from the parent to lift expenseData state
     props.onSaveExpenseData(expenseData);
     //clear form data and state
     setEnteredTitle("");

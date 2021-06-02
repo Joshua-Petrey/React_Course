@@ -12,7 +12,7 @@ const NewExpense = (props) => {
       id: Math.random().toString(),
     };
     // send exenseData up to App.js
-    props.onAddExpense();
+    props.onAddExpense(expenseData);
   };
 
   return (
