@@ -27,7 +27,6 @@ const INITIAL_EXPENSES = [
 
 const App = () => {
   const [expenses, setExpenses] = useState(INITIAL_EXPENSES);
-
   // add a new expense to expenseData, triggered when new expense is added
   const addExpenseHandler = (expense) => {
     // add new expense to front of expenses array and add old expenses. Use function format to get latest state snapshot
