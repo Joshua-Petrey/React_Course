@@ -48,7 +48,7 @@ const ExpenseForm = (props) => {
     const expenseData = {
       title: enteredTitle,
       amount: enteredAmount,
-      date: new Date(enteredDate),
+      date: new Date(enteredDate + "T00:00:00"),
     };
     // call the function prop passed from the parent to lift expenseData state
     props.onSaveExpenseData(expenseData);
@@ -56,6 +56,7 @@ const ExpenseForm = (props) => {
     setEnteredTitle("");
     setEnteredAmount("");
     setEnteredDate("");
+    props.hideForm();
   };
 
   return (
@@ -91,6 +92,9 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button type="button" onClick={props.hideForm}>
+          Cancel
+        </button>
         <button type="submit">Add expense</button>
       </div>
     </form>
