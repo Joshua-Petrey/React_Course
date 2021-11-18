@@ -5,7 +5,7 @@ import { useState } from "react";
 // Render a form for entering a new expense, saves data that will be pulled up tp App.js
 
 const NewExpense = (props) => {
-  // fired by the ExpenseForm wihich is the child of newExpense
+  // fired by the ExpenseForm which is the child of newExpense
   const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
       ...enteredExpenseData,

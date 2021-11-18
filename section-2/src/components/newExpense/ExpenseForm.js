@@ -42,12 +42,12 @@ const ExpenseForm = (props) => {
   };
 
   const submitHandler = (event) => {
-    // stops page reload
+    // stops page reload on submit
     event.preventDefault();
     // get state values to be sent to server/parent component
     const expenseData = {
       title: enteredTitle,
-      amount: enteredAmount,
+      amount: +enteredAmount,
       date: new Date(enteredDate + "T00:00:00"),
     };
     // call the function prop passed from the parent to lift expenseData state
