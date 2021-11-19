@@ -5,6 +5,7 @@ import CourseInput from './components/CourseGoals/CourseInput/CourseInput';
 import './App.css';
 
 const App = () => {
+  // starting goal items
   const [courseGoals, setCourseGoals] = useState([
     { text: 'Do all exercises!', id: 'g1' },
     { text: 'Finish the course!', id: 'g2' }
@@ -12,7 +13,9 @@ const App = () => {
 
   const addGoalHandler = enteredText => {
     setCourseGoals(prevGoals => {
+      // get previous goals
       const updatedGoals = [...prevGoals];
+      // add new to to the beginning
       updatedGoals.unshift({ text: enteredText, id: Math.random().toString() });
       return updatedGoals;
     });
@@ -20,11 +23,13 @@ const App = () => {
 
   const deleteItemHandler = goalId => {
     setCourseGoals(prevGoals => {
+      // remove clicked on goal using id
       const updatedGoals = prevGoals.filter(goal => goal.id !== goalId);
       return updatedGoals;
     });
   };
 
+  // use if goallist is empty
   let content = (
     <p style={{ textAlign: 'center' }}>No goals found. Maybe add one?</p>
   );
