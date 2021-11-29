@@ -5,6 +5,7 @@ import styles from "./ErrorModal.module.css"
 const ErrorModal = (props) => {
   return (
     <div>
+      {/* Backdrop div */}
       <div className={styles.backdrop} onClick={props.handleError} />
       <Card className={styles.modal}>
         <header className={styles.header}>

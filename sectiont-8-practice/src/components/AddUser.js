@@ -7,6 +7,7 @@ import ErrorModal from './UI/ErrorModal';
 const AddUser = (props) => {
   const [username, setUsername] = useState('') ;
   const [age, setAge] = useState('') ;
+  // ErrorModal state
   const [error, setError] = useState();
 
   const updateUsernameHandler = (event) => {
@@ -19,7 +20,7 @@ const AddUser = (props) => {
     setAge(event.target.value)
   }
  
-  // change error state to dismisss modal
+  // change error state to dismiss modal
   const errorHandler = () => {
     setError(null)
   }
@@ -27,11 +28,12 @@ const AddUser = (props) => {
   const submitHandler = (e) => {
     e.preventDefault() ;
     if(username.trim().length === 0 || age.trim().length === 0){
+      // Trigger ErrorModal;
       setError({
         title: "Invalid input",
-        message: "Values must be non-empty"
-      })
-      return
+        message: "Values must be non-empty",
+      });
+      return;
     }
     if(+age < 1){
       setError({
