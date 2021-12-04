@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -11,12 +11,26 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  // dependencies are whatever state variable you use in useEffect. 
+  useEffect(() => {
+    // debounce
+    console.log("debounce triggered")
+    setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+      console.log("Debounce complete")
+    }, 1000)
+
+    // return is a cleanup function
+    // runs on or unmount
+    return () => {
+      console.log("Clenaup function fired")
+    }
+  }, [enteredEmail, enteredPassword])
+
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
-
-    setFormIsValid(
-      event.target.value.includes('@') && enteredPassword.trim().length > 6
-    );
   };
 
   const passwordChangeHandler = (event) => {
