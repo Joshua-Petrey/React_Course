@@ -14,17 +14,18 @@ const Login = (props) => {
   // dependencies are whatever state variable you use in useEffect. 
   useEffect(() => {
     // debounce
-    console.log("debounce triggered")
-    setTimeout(() => {
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity")
       setFormIsValid(
         enteredEmail.includes("@") && enteredPassword.trim().length > 6
       );
-      console.log("Debounce complete")
     }, 1000)
 
     // return is a cleanup function
     // runs on or unmount
     return () => {
+      // clear last timer so when can set a new timer
+      clearTimeout(identifier);
       console.log("Clenaup function fired")
     }
   }, [enteredEmail, enteredPassword])
