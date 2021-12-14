@@ -6,6 +6,7 @@ const defaultCartState = {
   totalAmount: 0,
 };
 
+// state = current state, action = contains change state action
 const cartReducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
     // update price of all items
@@ -70,7 +71,7 @@ const CartProvider = (props) => {
   /// set initial state and connect reducer
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState)
 
-  // Called in MEalITemForm
+  // Called in MealITemForm
   const addItemHandler = (item) => {
     dispatchCartAction({type: 'ADD_ITEM', item: item})
   }
