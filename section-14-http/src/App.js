@@ -7,15 +7,12 @@ function App() {
   //f to store the returned movies
   const [movies, setMovies] = useState([])
 
-  const fetchMoviesHandler = () => {
-    fetch("https://swapi.dev/api/films/")
-      .then(response => {
-        // return results in json format
-        return response.json()
-      })
-      .then(movieData => {
-        // create new object containing only the info we want
-        const tranformedMovies = movieData.results.map(movie => {
+async function fetchMoviesHandler() {
+    const response = await  fetch("https://swapi.dev/api/films/")
+    // convert resonse to json format
+    const movieData = await response.json()
+    // make new object with only the data fields we need
+    const tranformedMovies = movieData.results.map(movie => {
           return {
             id: movie.episode_id,
             title: movie.title,
@@ -23,12 +20,9 @@ function App() {
             opening_crawl: movie.opening_crawl,
           }
         })
-        // store movies in state
-        setMovies(tranformedMovies)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // store movies in state
+    setMovies(tranformedMovies)
+    
   }
 
   return (
