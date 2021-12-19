@@ -1,38 +1,89 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
 import './App.css';
 
 function App() {
-  //f to store the returned movies
-  const [movies, setMovies] = useState([])
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-async function fetchMoviesHandler() {
-    const response = await  fetch("https://swapi.dev/api/films/")
-    // convert resonse to json format
-    const movieData = await response.json()
-    // make new object with only the data fields we need
-    const tranformedMovies = movieData.results.map(movie => {
-          return {
-            id: movie.episode_id,
-            title: movie.title,
-            release_date: movie.release_data,
-            opening_crawl: movie.opening_crawl,
-          }
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        "https://react-hhtp-32085-default-rtdb.firebaseio.com/movies.json"
+      );
+
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
+      // firebase return an object contain movie objects
+      const data = await response.json();
+      console.log(data)
+
+      const loadedMovies = []
+      // push movie objects to array
+      for( const key in data){
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate
         })
-    // store movies in state
-    setMovies(tranformedMovies)
-    
+      }
+      setMovies(loadedMovies);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
+
+  async function addMovieHandler(movie) {
+    const response = await fetch(
+      "https://react-hhtp-32085-default-rtdb.firebaseio.com/movies.json",
+      {method: "POST",
+      // convert movie object to json format
+      body: JSON.stringify(movie),
+      headers: {
+        'Content-Type': "application/json"
+      }
+      });
+
+    const data = await response.json()
+    console.log(data);
+  }
+
+  let content = <p>Found no movies.</p>;
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
   }
 
   return (
     <React.Fragment>
       <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <AddMovie onAddMovie={addMovieHandler} />
       </section>
       <section>
-        <MoviesList movies={movies} />
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
+      <section>{content}</section>
     </React.Fragment>
   );
 }
