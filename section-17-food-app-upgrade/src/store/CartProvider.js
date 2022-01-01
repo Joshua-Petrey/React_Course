@@ -41,6 +41,7 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+
   if (action.type === "REMOVE_ITEM") {
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.id
@@ -55,13 +56,16 @@ const cartReducer = (state, action) => {
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
     }
-
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     };
   }
-
+  if (action.type === "CLEAR_CART") {
+    return {
+      defaultCartState,
+    };
+  }
   return defaultCartState;
 };
 
@@ -71,6 +75,7 @@ const CartProvider = (props) => {
   /// set initial state and connect reducer
   const [cartState, dispatchCartAction] = useReducer(cartReducer, defaultCartState)
 
+  // handlers can be called wherever cartContext is used
   // Called in MealITemForm
   const addItemHandler = (item) => {
     dispatchCartAction({type: 'ADD_ITEM', item: item})
@@ -80,12 +85,17 @@ const CartProvider = (props) => {
      dispatchCartAction({ type: "REMOVE_ITEM", id: id });
   };
   
+  const clearCartHandler = () => {
+    dispatchCartAction({type: "CLEAR_CART"})
+  }
+
   // The latest state of context passed to the CartContext.Provider
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemHandler,
-    removeItem: removeItemHandler
+    removeItem: removeItemHandler,
+    clearCart: clearCartHandler
   }
 
   return (

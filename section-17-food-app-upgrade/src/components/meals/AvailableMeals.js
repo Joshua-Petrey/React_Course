@@ -1,38 +1,64 @@
 import Card from '../UI/Card/Card';
 import MealItem from './Mealitem/MealItem';
 import styles from './AvalibleMeals.module.css'
-
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import { useEffect, useState } from 'react';
 
 // renders a list of all meals
 const AvailableMeals = () => {
+  const [meals, setMeals ] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState()
 
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  //get meals from server
+  useEffect( () => {
+    const fetchMeals = async () => {
+      const response = await fetch(
+        "https://react-hhtp-32085-default-rtdb.firebaseio.com/meals.json"
+      );
+        // if error thrown in promise(fetch) the promise rejects
+        if(!response.ok){
+          throw new Error('Something went wrong')
+        }
+
+      // convert to js object
+      const responseData = await response.json()
+
+      const loadedMeals = []
+      // transform meals object to array of objects  
+      for (const key in responseData){
+        loadedMeals.push({
+          id: key.id,
+          description: responseData[key].description,
+          price: responseData[key].price,
+          name: responseData[key].name,
+        })
+      }
+      setMeals(loadedMeals)
+      setIsLoading(false);
+    }
+  // to handle error if one occurs in fetchMeals
+  fetchMeals().catch((err) => {
+  setIsLoading(false)
+  setError(err.message)
+        });
+      }
+  ,[])
+
+  if(isLoading){
+    return (<section className={styles.MealsLoading}><p>Loading...</p></section>)
+  }
+
+  // show error
+  if(error){
+    return (
+      <section className={styles.MealsError}>
+        <p>{error}</p>
+      </section>
+    );
+  }
+
+  // Create list of meals
+  const mealsList = meals.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}
