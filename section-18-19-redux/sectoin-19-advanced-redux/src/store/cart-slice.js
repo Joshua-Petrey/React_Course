@@ -3,42 +3,49 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   items: [],
   itemsInCart: 0,
+  changed: false
 }
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: initialState,
   reducers: {
-    addItemToCart(state, action){
+    replaceCart(state, action) {
+      state.itemsInCart = action.payload.itemsInCart || 0;
+      state.items = action.payload.items || [];
+    },
+    addItemToCart(state, action) {
       const itemToAdd = action.payload;
-      const existingItem = state.items.find(item => item.id === itemToAdd.id);
-      state.itemsInCart++
-      if(!existingItem){
+      const existingItem = state.items.find((item) => item.id === itemToAdd.id);
+      state.itemsInCart++;
+      state.changed = true
+      if (!existingItem) {
         state.items.push({
           id: itemToAdd.id,
           price: itemToAdd.price,
           quantity: 1,
           totalPrice: itemToAdd.price,
-          name: itemToAdd.name
+          name: itemToAdd.name,
         });
       } else {
-        existingItem.quantity++
-        existingItem.totalPrice = existingItem.totalPrice + itemToAdd.price
+        existingItem.quantity++;
+        existingItem.totalPrice = existingItem.totalPrice + itemToAdd.price;
       }
     },
-    removeItemFromCart(state, action){
+    removeItemFromCart(state, action) {
       const itemID = action.payload;
       const existingItem = state.items.find((item) => item.id === itemID);
-      state.itemsInCart--
-      if(existingItem.quantity === 1){
-        state.items = state.items.filter(item => itemID !== item.id )
+      state.itemsInCart--;
+      state.changed = true;
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter((item) => itemID !== item.id);
       } else {
-        existingItem.quantity--
-        existingItem.totalPrice = existingItem.totalPrice - existingItem.price
+        existingItem.quantity--;
+        existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
       }
-    }
-  }
-})
+    },
+  },
+});
 
 export const cartActions = cartSlice.actions
 export const cartReducer = cartSlice.reducer
