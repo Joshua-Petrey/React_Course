@@ -29,7 +29,7 @@ const QuoteList = (props) => {
      search: `?sort=${isSortingAscending ? "desc" : "asc"}`,
    });
  };
- 
+
   return (
     <Fragment>
       <div className={classes.sorting}>
