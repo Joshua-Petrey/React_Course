@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
 import classes from './QuoteItem.module.css';
 
+// Gets pros from QuoteList
 const QuoteItem = (props) => {
+
   return (
     <li className={classes.item}>
       <figure>
@@ -9,9 +12,9 @@ const QuoteItem = (props) => {
         </blockquote>
         <figcaption>{props.author}</figcaption>
       </figure>
-      <a className='btn'>
+      <Link className='btn' to={`/quote/${props.id}`}>
         View Fullscreen
-      </a>
+      </Link>
     </li>
   );
 };
