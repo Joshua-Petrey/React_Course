@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useHttp from '../../hooks/use-http';
 import { getAllComments } from '../../lib/api';
@@ -49,7 +49,7 @@ const Comments = () => {
         </button>
       )}
       {isAddingComment && <NewCommentForm quoteId={quoteId} onAddedComment={onAddedCommentHandler} />}
-      <p>Comments...</p>
+      {comments}
     </section>
   );
 };
