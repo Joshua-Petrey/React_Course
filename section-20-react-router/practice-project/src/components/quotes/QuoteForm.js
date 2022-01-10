@@ -3,7 +3,6 @@ import { Fragment, useRef, useState } from 'react';
 import Card from '../UI/Card';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import classes from './QuoteForm.module.css';
-import { Prompt } from 'react-router-dom';
 
 const QuoteForm = (props) => {
   const authorInputRef = useRef();
@@ -30,7 +29,6 @@ const QuoteForm = (props) => {
 
   return (
     <Fragment>
-      <Prompt when={isEntered} message={(location) => "Are you sure you want to leave. All entered data will be lost." }></Prompt>
     <Card>
       <form className={classes.form} onSubmit={submitFormHandler} onFocus={onFocusHandler}>
         {props.isLoading && (
